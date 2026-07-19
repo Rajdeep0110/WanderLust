@@ -51,6 +51,12 @@ app.get("/listings/:id", async (req, res) => {
 
 // Create Route
 app.post("/listings", async (req, res) => {
+  console.log("=== FORM SUBMISSION DEBUG ===");
+  console.log("Full req.body:", req.body);
+  console.log("req.body.listing:", req.body.listing);
+  console.log("Title value:", req.body.listing ? req.body.listing.title : "listing object missing entirely");
+  console.log("==============================");
+
   const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
