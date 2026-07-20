@@ -50,8 +50,9 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 // Create Route
-app.post("/listings", async (req, res) => {
-  console.log("=== FORM SUBMISSION DEBUG ===");
+app.post("/listings", async (req, res, next) => {
+  try{
+      console.log("=== FORM SUBMISSION DEBUG ===");
   console.log("Full req.body:", req.body);
   console.log("req.body.listing:", req.body.listing);
   console.log("Title value:", req.body.listing ? req.body.listing.title : "listing object missing entirely");
@@ -60,6 +61,10 @@ app.post("/listings", async (req, res) => {
   const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
+  } catch(err){
+    next(err);
+  }
+
 });
 
 // Edit Route
@@ -89,6 +94,10 @@ app.delete("/listings/:id", async (req, res) => {
   await Listing.findByIdAndDelete(id);
   res.redirect("/listings");
 });
+
+app.use((err, req, res, next)=>{
+  res.send("Something Went Wrong!")
+})
 
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
