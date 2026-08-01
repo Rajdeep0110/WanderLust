@@ -6,7 +6,7 @@
 
         <div class="col-lg-8">
 
-            <h2 class="mb-4 fw-bold">Listing Details</h2>
+            <h2 class="mb-4 fw-bold"><%= listing.title %></h2>
 
             <div class="card show-card shadow">
 
@@ -18,16 +18,12 @@
 
                 <div class="card-body">
 
-                    <h4 class="card-title fw-bold">
-                        <%= listing.title %>
-                    </h4>
-
                     <p class="card-text text-muted">
                         <%= listing.description %>
                     </p>
 
                     <h5 class="fw-bold">
-                        &#8377;<%= listing.price.toLocaleString("en-IN") %>
+                        &#8377;<%= listing.price %>
                         <span class="text-muted fs-6"> / night</span>
                     </h5>
 
@@ -37,6 +33,7 @@
                     </p>
 
                 </div>
+
             </div>
 
             <div class="mt-4 d-flex gap-3">
@@ -52,9 +49,48 @@
                     method="POST"
                     action="/listings/<%= listing._id %>?_method=DELETE"
                 >
-                    <button class="btn btn-dark px-4">
+                    <button type="submit" class="btn btn-dark px-4">
                         Delete
                     </button>
+                </form>
+
+            </div>
+
+            <div class="mt-4 mb-3">
+                <hr>
+                <h4>Leave a Review</h4>
+
+                <form action="/listings/<%= listing._id %>/reviews" method="POST">
+
+                    <div class="mb-3 mt-3">
+                        <label for="rating" class="form-label">Rating</label>
+
+                        <input
+                            type="range"
+                            min="1"
+                            max="5"
+                            id="rating"
+                            name="review[rating]"
+                            class="form-range"
+                        >
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label for="comment" class="form-label">Comments</label>
+
+                        <textarea
+                            name="review[comment]"
+                            id="comment"
+                            cols="30"
+                            rows="5"
+                            class="form-control"
+                        ></textarea>
+                    </div>
+
+                    <button class="btn btn-outline-dark">
+                        Submit
+                    </button>
+
                 </form>
 
             </div>
