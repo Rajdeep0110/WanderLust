@@ -18,45 +18,63 @@
 
                 <div class="card-body">
 
-                    <p class="card-text text-muted">
+                    <!-- Listing Owner -->
+                    <p class="card-text">
+                        Owned by <i><%= listing.owner.username %></i>
+                    </p>
+
+                    <!-- Description -->
+                    <p class="card-text">
                         <%= listing.description %>
                     </p>
 
-                    <h5 class="fw-bold">
-                        &#8377;<%= listing.price %>
-                        <span class="text-muted fs-6"> / night</span>
-                    </h5>
+                    <!-- Price -->
+                    <p class="card-text">
+                        &#8377;<%= listing.price.toLocaleString("en-IN") %>
+                    </p>
 
-                    <p class="mb-0">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <%= listing.location %>, <%= listing.country %>
+                    <!-- Location -->
+                    <p class="card-text">
+                        <%= listing.location %>
+                    </p>
+
+                    <!-- Country -->
+                    <p class="card-text">
+                        <%= listing.country %>
                     </p>
 
                 </div>
 
             </div>
 
-            <div class="mt-4 d-flex gap-3">
+            <!-- Edit and Delete buttons only for Listing Owner -->
+            <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
 
-                <a
-                    href="/listings/<%= listing._id %>/edit"
-                    class="btn btn-danger px-4"
-                >
-                    Edit
-                </a>
+                <div class="mt-4 d-flex gap-3">
 
-                <form
-                    method="POST"
-                    action="/listings/<%= listing._id %>?_method=DELETE"
-                >
-                    <button type="submit" class="btn btn-dark px-4">
-                        Delete
-                    </button>
-                </form>
+                    <a
+                        href="/listings/<%= listing._id %>/edit"
+                        class="btn btn-danger px-4"
+                    >
+                        Edit
+                    </a>
 
-            </div>
+                    <form
+                        method="POST"
+                        action="/listings/<%= listing._id %>?_method=DELETE"
+                    >
+                        <button type="submit" class="btn btn-dark px-4">
+                            Delete
+                        </button>
+                    </form>
 
+                </div>
+
+            <% } %>
+
+            <!-- Review Section -->
             <div class="mt-4 mb-3">
+
                 <hr>
 
                 <h4>Leave a Review</h4>
@@ -69,7 +87,10 @@
                 >
 
                     <div class="mb-3 mt-3">
-                        <label for="rating" class="form-label">Rating</label>
+
+                        <label for="rating" class="form-label">
+                            Rating
+                        </label>
 
                         <input
                             type="range"
@@ -79,10 +100,14 @@
                             name="review[rating]"
                             class="form-range"
                         >
+
                     </div>
 
                     <div class="mb-3 mt-3">
-                        <label for="comment" class="form-label">Comments</label>
+
+                        <label for="comment" class="form-label">
+                            Comments
+                        </label>
 
                         <textarea
                             name="review[comment]"
@@ -96,6 +121,7 @@
                         <div class="invalid-feedback">
                             Please add some comments for review
                         </div>
+
                     </div>
 
                     <button class="btn btn-outline-dark">
@@ -109,13 +135,27 @@
                 <p><b>All Reviews</b></p>
 
                 <div class="row">
+
                     <% for(let review of listing.reviews) { %>
+
                         <div class="col-6 mb-3">
+
                             <div class="card">
+
                                 <div class="card-body">
-                                    <h5 class="card-title">Jane Doe</h5>
-                                    <p class="card-text"><%= review.comment %></p>
-                                    <p class="card-text"><%= review.rating %> stars</p>
+
+                                    <h5 class="card-title">
+                                        Jane Doe
+                                    </h5>
+
+                                    <p class="card-text">
+                                        <%= review.comment %>
+                                    </p>
+
+                                    <p class="card-text">
+                                        <%= review.rating %> stars
+                                    </p>
+
                                 </div>
 
                                 <form
@@ -123,14 +163,19 @@
                                     method="POST"
                                     action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
                                 >
+
                                     <button class="btn btn-sm btn-dark">
                                         Delete
                                     </button>
+
                                 </form>
 
                             </div>
+
                         </div>
+
                     <% } %>
+
                 </div>
 
             </div>
