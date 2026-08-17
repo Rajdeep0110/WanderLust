@@ -1,5 +1,9 @@
 <% layout("/layouts/boilerplate") %>
 
+<script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+</script>
+
 <div class="row justify-content-center">
 
     <div class="col-lg-8">
@@ -80,9 +84,9 @@
         <!-- Review Section -->
         <div class="mt-4 mb-3">
 
-            <hr>
-
             <% if(currUser) { %>
+
+                <hr>
 
                 <h4>Leave a Review</h4>
 
@@ -124,7 +128,6 @@
                                 1 star
                             </label>
 
-
                             <input
                                 type="radio"
                                 id="first-rate2"
@@ -138,7 +141,6 @@
                             >
                                 2 stars
                             </label>
-
 
                             <input
                                 type="radio"
@@ -154,7 +156,6 @@
                                 3 stars
                             </label>
 
-
                             <input
                                 type="radio"
                                 id="first-rate4"
@@ -168,7 +169,6 @@
                             >
                                 4 stars
                             </label>
-
 
                             <input
                                 type="radio"
@@ -226,62 +226,84 @@
 
 
             <!-- All Reviews -->
-            <p class="mt-4">
-                <b>All Reviews</b>
-            </p>
+            <% if(listing.reviews.length > 0) { %>
 
-            <div class="row">
+                <p class="mt-4">
+                    <b>All Reviews</b>
+                </p>
 
-                <% for(let review of listing.reviews) { %>
+                <div class="row">
 
-                    <div class="col-6 mb-3">
+                    <% for(let review of listing.reviews) { %>
 
-                        <div class="card">
+                        <div class="col-6 mb-3">
 
-                            <div class="card-body">
+                            <div class="card">
 
-                                <h5 class="card-title">
-                                    <%= review.author.username %>
-                                </h5>
+                                <div class="card-body">
 
-                                <p class="card-text">
-                                    <%= review.comment %>
-                                </p>
+                                    <h5 class="card-title">
+                                        <%= review.author.username %>
+                                    </h5>
 
-                                <p class="card-text">
-                                    <%= review.rating %> stars
-                                </p>
+                                    <p class="card-text">
+                                        <%= review.comment %>
+                                    </p>
 
-                                <p
-                                    class="starability-result"
-                                    data-rating="<%= review.rating %>"
-                                >
-                                    Rated: <%= review.rating %> stars
-                                </p>
+                                    <p class="card-text">
+                                        <%= review.rating %> stars
+                                    </p>
 
-
-                                <!-- Delete Review -->
-                                <form
-                                    method="POST"
-                                    action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-                                >
-
-                                    <button
-                                        class="btn btn-sm btn-dark"
-                                        type="submit"
+                                    <p
+                                        class="starability-result"
+                                        data-rating="<%= review.rating %>"
                                     >
-                                        Delete
-                                    </button>
+                                        Rated: <%= review.rating %> stars
+                                    </p>
 
-                                </form>
+
+                                    <!-- Delete Review -->
+                                    <% if(currUser && currUser._id.equals(review.author._id)) { %>
+
+                                        <form
+                                            method="POST"
+                                            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                        >
+
+                                            <button
+                                                class="btn btn-sm btn-dark"
+                                                type="submit"
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    <% } %>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                    <% } %>
 
-                <% } %>
+                </div>
+
+            <% } %>
+
+
+            <!-- Line before Map -->
+            <hr class="mt-4">
+
+
+            <!-- Map Section -->
+            <div class="col-12 mb-3">
+
+                <h3>Where you'll be</h3>
+
+                <div id="map"></div>
 
             </div>
 
@@ -290,3 +312,6 @@
     </div>
 
 </div>
+
+
+<script src="/js/map.js"></script>

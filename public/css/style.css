@@ -131,3 +131,10 @@ body {
     object-fit: fill;
     border-radius: 1rem;
 }
+
+/* Map */
+
+#map {
+    height: 400px;
+    width: 80vh;
+}
