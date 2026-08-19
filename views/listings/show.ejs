@@ -1,7 +1,9 @@
+```ejs
 <% layout("/layouts/boilerplate") %>
 
 <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <%- JSON.stringify(listing) %>;
 </script>
 
 <div class="row justify-content-center">
@@ -315,3 +317,4 @@
 
 
 <script src="/js/map.js"></script>
+```
